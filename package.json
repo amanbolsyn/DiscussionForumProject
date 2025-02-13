@@ -2,7 +2,7 @@
   "name": "discussionforumproject",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "app.js",
   "script": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
