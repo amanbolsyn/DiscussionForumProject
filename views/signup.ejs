@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--Head Section-->
+<%- include("./partials/head.ejs") %>
+
+    <body>
+
+        <!-- Header Section -->
+        <%- include("./partials/header.ejs") %>
+
+            <!-- Main Content -->
+            <main>
+                <div class="container">
+                    <section class="form-section">
+                        <h2>Sign Up</h2>
+                        <form id="signupForm" class="signup-form" action="/signup">
+                            <input type="text" id="nickname" name="nickname" placeholder="Enter nickname" required>
+                            <div class="nickname error"></div><br><br>
+
+                            <input type="text" id="email" name="email" placeholder="Enter email" required>
+                            <div class="email error"></div><br><br>
+
+                            <input type="password" id="password" name="password" placeholder="Enter password" required>
+                            <div class="password error"></div><br><br>
+                            <button>Sign up</button>
+                        </form>
+                    </section>
+                </div>
+            </main>
+
+
+            <!-- Footer Section -->
+            <%- include("./partials/footer.ejs") %>
+
+    </body>
+
+
+    <script>
+        const form = document.querySelector('form');
+
+        const nicknameErorr = document.querySelector('.nickname.error');
+        const emailErorr = document.querySelector('.email.error');
+        const passwordErorr = document.querySelector('.password.error');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // reset errors
+            nicknameErorr.textContent = '';
+            emailErorr.textContent = '';
+            passwordErorr.textContent = '';
+
+            //get the values 
+            const nickname = form.nickname.value;
+            const email = form.email.value;
+            const password = form.password.value;
+
+
+
+            try {
+                const res = await fetch('/signup', {
+                    method: 'POST',
+                    body: JSON.stringify({ nickname, email, password }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await res.json();
+
+                if (data.errors) {
+
+                    nicknameErorr.textContent = data.errors.nickname;
+                    emailErorr.textContent = data.errors.email;
+                    passwordErorr.textContent = data.errors.password;
+                }
+
+                if(data.user) {
+                    location.assign('/');
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+
+
+        })
+
+    </script>
+
+</html>

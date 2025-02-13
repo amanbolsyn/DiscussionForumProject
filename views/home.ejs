@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--Head section-->
+<%- include("./partials/head.ejs") %>
+
+  <body>
+
+    <!-- Header Section -->
+    <%- include("./partials/header.ejs") %>
+
+      <!-- Main Content -->
+      <main>
+        <!--New Post Form-->
+        <div class="container">
+          <section class="post-form">
+            <form id="newPostForm" action="/posts" method="POST">
+              <h2>Post New Topic</h2>
+              <input type="text" id="postTitle" placeholder="Enter title" required name="title"><br><br>
+              <textarea id="postContent" placeholder="Enter content" required name="body"></textarea><br><br>
+
+              <button type="submit">Create Post</button>
+            </form><br><br>
+          </section>
+
+          <!--Edit Post Form-->
+          <section class="post-form">
+
+            <form id="editPostForm" action="/posts" method="PUT">
+              <h2>Edit Post</h2>
+              <input type="text" id="editpostTitle" placeholder="Enter title" required name="title"><br><br>
+              <textarea id="editpostContent" placeholder="Enter content" required name="body"></textarea><br><br>
+
+              <button id="save" type="submit">Save</button>
+            </form>
+          </section>
+
+          <section class="post-list">
+            <h2>All Posts</h2>
+            <div id="postsContainer">
+              <% if (posts.length>= 0) { %>
+                <% posts.forEach(posts=> { %>
+                  <a style="text-decoration:none;" href="/post/<%= posts._id %>">
+                    <h3>
+                      <%= posts.title %>
+                    </h3>
+                  </a>
+                  <p>
+                    <%= posts.body %>
+                  </p>
+                  <p>
+                    <a>Categories</a>
+                    <%= posts.categories %><br>
+                      <a>Likes</a>
+                      <%= posts.likes%><br>
+                        <a>Author</a>
+                        <%= posts.author%>
+                  </p>
+                  <button id="edit" data-id=<%=posts._id %> >Edit</button>
+                  <button id="delete" data-id=<%=posts._id %> >Delete</button>
+                  <hr>
+
+                  <% }) %>
+                    <% } else { %>
+                      <p>There are no blogs to display...</p>
+                      <% } %>
+
+            </div>
+        </div>
+        </section>
+        </div>
+      </main>
+
+      <!-- Footer Section -->
+      <%- include("./partials/footer.ejs") %>
+
+        <script>
+          const deleteBttn = document.getElementById("delete");
+
+          deleteBttn.addEventListener('click', (e) => {
+            const endpoint = `/posts/${deleteBttn.dataset.id}`;
+
+            fetch(endpoint, {
+              method: 'DELETE',
+            })
+              .then(response => response.json())
+              .then((data) => {
+                alert("Post was successfully deleted");
+                window.location.href = data.redirect
+              })
+              .catch((err) => { console.log(err) })
+          });
+
+          const editBttn = document.getElementById("edit");
+
+          editBttn.addEventListener('click', (e) => {
+            const endpoint = `/posts/${editBttn.dataset.id}`
+
+            fetch(endpoint, {
+              method: 'GET',
+            })
+              .then(response => response.json())
+              .then((data) => {
+                document.getElementById("editpostTitle").value = data.result.title;
+                document.getElementById("editpostContent").value = data.result.body;
+              })
+              .catch((err) => { console.log(err) })
+          })
+
+          // // Edit button functionality
+          // const editButtons = document.querySelectorAll('.editButton');
+
+          // editButtons.forEach(button => {
+          //   button.addEventListener('click', (e) => {
+          //     const postId = button.dataset.id;
+          //     const endpoint = `/posts/${postId}`;
+
+          //     // Fetch the post details from the server
+          //     fetch(endpoint)
+          //       .then(response => response.json())
+          //       .then(postData => {
+          //         // Populate the edit form with the post details
+          //         document.getElementById('editpostTitle').value = postData.title;
+          //         document.getElementById('editpostContent').value = postData.body;
+
+          //         // Optionally, you can update the form action to include the postId for PUT requests
+          //         const editForm = document.getElementById('editPostForm');
+          //         editForm.action = `/posts/${postId}`;
+
+          //         // Scroll to the edit form
+          //         window.scrollTo({
+          //           top: document.getElementById('editPostForm').offsetTop,
+          //           behavior: 'smooth'
+          //         });
+          //       })
+          //       .catch(err => console.log('Error fetching post:', err));
+          //   });
+          // });
+
+
+        </script>
+  </body>
+
+</html>
