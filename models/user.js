@@ -26,10 +26,6 @@ const userSchema = new Schema({
     type: String,  // Storing refresh token for single device login
     default: null,
   },
-  verificationCode: {
-    type: String,  // This stores the code sent to the user for email verification
-    required: true,
-},
 })
 
 
