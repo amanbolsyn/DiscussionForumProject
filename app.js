@@ -23,9 +23,6 @@ mongoose.connect(dbURI)
     .catch((err) => console.log(err))
 
 
-//register view engine 
-app.set('view engine', 'ejs')
-
 //middlware and static files(images, styles)
 app.use(express.static('public'));
 app.use(express.json());
