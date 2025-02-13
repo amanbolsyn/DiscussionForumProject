@@ -2,10 +2,10 @@
   "name": "discussionforumproject",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "script.js",
   "script": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node script.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,3 +22,4 @@
     "validator": "^13.12.0"
   }
 }
+
